@@ -1,0 +1,36 @@
+Name:               ABList
+Version:            0.0.1
+Author:             Dylan Just <dylan@techtangents.com>
+License:            BSD3
+Copyright:          Dylan Just
+Maintainer:         Dylan Just
+Category:           Control
+Synopsis:           An alternating list of two types
+Description:        An alternating list of two types
+Cabal-version:      >= 1.6
+Build-Type:         Simple
+
+
+Library
+  Build-Depends:    base < 5 && >= 3,
+                    linear,
+                    newtype
+
+  GHC-Options:      -Wall
+                    -fno-warn-type-defaults
+                    -fno-warn-name-shadowing
+
+  Exposed-Modules:  Data.ABList
+  hs-source-dirs:   src
+
+
+test-suite the-tests
+  type:              exitcode-stdio-1.0
+  hs-source-dirs:    test, src
+  main-is:           Tests.hs
+  build-depends:     base,
+                     HUnit,
+                     QuickCheck,
+                     test-framework,
+                     test-framework-hunit,
+                     test-framework-quickcheck2
