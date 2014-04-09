@@ -18,7 +18,8 @@ tests =
     g_abHead,
     g_abTail,
     g_aaToList,
-    g_aaFromList
+    g_aaFromList,
+    g_aaMap
   ]
 
 g_abToListEither =
@@ -158,4 +159,12 @@ prop_aaFromList_3 a b c = aaFromList [a, b, c] == a :/ b :/ c :/ ABNil
 
 prop_aaToList_roundTrip :: [Int] -> Bool
 prop_aaToList_roundTrip as = (aaToList . aaFromList) as == as
+
+g_aaMap =
+  testGroup "aaMap"
+  [ testProperty "a" prop_aaMap
+  ]
+
+prop_aaMap :: [Int] -> Bool
+prop_aaMap as = (2 +) `aaMap` (aaFromList as) == (2 +) `fmap` as
 

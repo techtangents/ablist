@@ -49,6 +49,9 @@ aaToList :: ABList a a -> [a]
 aaToList ABNil = []
 aaToList (a :/ as) = a : (aaToList as)
 
+aaMap :: (a -> b) -> ABList a a -> ABList b b
+aaMap = undefined
+
 aaFromList :: [a] -> ABList a a
 aaFromList [] = ABNil
 aaFromList (a : as) = a :/ (aaFromList as)
