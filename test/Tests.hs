@@ -16,7 +16,8 @@ tests =
     g_abToListEither,
     g_abFromListEither,
     g_abHead,
-    g_abTail
+    g_abTail,
+    g_aaToList
   ]
 
 g_abToListEither =
@@ -112,6 +113,14 @@ prop_abTail_1 a = abTail (a :/ ABNil :: ABList Int String) == Just ABNil
 
 prop_abTail_2 :: Int -> String -> Bool
 prop_abTail_2 a b = abTail (a :/ b :/ ABNil :: ABList Int String) == (Just $ b :/ ABNil)
+
+g_aaToList =
+  testGroup "aaToList"
+  [ testProperty "empty" prop_aaToList_empty
+  ]
+
+prop_asToList_empty :: Bool
+prop_asToList_empty ABNil = ([] :: [Int])
 
 
 
