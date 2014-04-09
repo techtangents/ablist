@@ -138,8 +138,24 @@ prop_aaToList_3 a b c = aaToList (a :/ b :/ c :/ ABNil) == [a, b, c]
 g_aaFromList =
   testGroup "aaFromList"
   [ testProperty "empty" prop_aaFromList_empty
+  , testProperty "1" prop_aaFromList_1
+  , testProperty "2" prop_aaFromList_2
+  , testProperty "3" prop_aaFromList_3
+  , testProperty "roundTrip" prop_aaToList_roundTrip
   ]
 
 prop_aaFromList_empty :: Bool
-prop_aaFromList_empty = aaFromList [] = ABNil
+prop_aaFromList_empty = aaFromList ([] :: [Int]) == ABNil
+
+prop_aaFromList_1 :: Int -> Bool
+prop_aaFromList_1 a = aaFromList [a] == a :/ ABNil
+
+prop_aaFromList_2 :: Int -> Int -> Bool
+prop_aaFromList_2 a b = aaFromList [a, b] == a :/ b :/ ABNil
+
+prop_aaFromList_3 :: Int -> Int -> Int -> Bool
+prop_aaFromList_3 a b c = aaFromList [a, b, c] == a :/ b :/ c :/ ABNil
+
+prop_aaToList_roundTrip :: [Int] -> Bool
+prop_aaToList_roundTrip as = (aaToList . aaFromList) as == as
 
