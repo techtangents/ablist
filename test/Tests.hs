@@ -14,7 +14,9 @@ tests :: [Test]
 tests =
   [
     g_abToListEither,
-    g_abFromListEither
+    g_abFromListEither,
+    g_abHead,
+    g_abTail
   ]
 
 g_abToListEither =
@@ -81,5 +83,35 @@ prop_abFromListEither_gb = abFromListEither ((Left undefined : Left undefined : 
 
 prop_abFromListEither_ggb :: String -> Char -> Bool
 prop_abFromListEither_ggb a b = abFromListEither (Left a : Right b : Left undefined : undefined) == Nothing
+
+
+g_abHead =
+  testGroup "abHead"
+  [ testProperty "empty" prop_abHead_empty
+  , testProperty "n" prop_abHead_n
+  ]
+
+prop_abHead_empty :: Bool
+prop_abHead_empty = abHead (ABNil :: ABList Int Float) == Nothing
+
+prop_abHead_n :: Int -> Bool
+prop_abHead_n a = abHead (a :/ undefined :: ABList Int Float) == Just a
+
+g_abTail =
+  testGroup "abTail"
+  [ testProperty "empty" prop_abTail_empty
+  , testProperty "1" prop_abTail_1
+  , testProperty "2" prop_abTail_2
+  ]
+
+prop_abTail_empty :: Bool
+prop_abTail_empty = abTail (ABNil :: ABList Int Float) == Nothing
+
+prop_abTail_1 :: Int -> Bool
+prop_abTail_1 a = abTail (a :/ ABNil :: ABList Int String) == Just ABNil
+
+prop_abTail_2 :: Int -> String -> Bool
+prop_abTail_2 a b = abTail (a :/ b :/ ABNil :: ABList Int String) == (Just $ b :/ ABNil)
+
 
 

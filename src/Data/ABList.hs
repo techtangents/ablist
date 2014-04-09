@@ -15,11 +15,9 @@ infixr 5 :/
 data ABList a b = ABNil | a :/ ABList b a
   deriving (Eq, Ord, Show)
 
-abFoldr :: ((Either a b) -> t -> t) -> t -> (ABList a b) -> t
-abFoldr = undefined
-
-abFoldr' :: (a -> t -> t) -> (b -> t -> t) -> t -> (ABList a b) -> t
-abFoldr' = undefined
+shallowFold :: t -> (a -> ABList b a -> t) -> (ABList a b) -> t
+shallowFold t _ ABNil = t
+shallowFold _ t (a :/ ba) = t a ba
 
 abToListEither :: ABList a b -> [Either a b]
 abToListEither ABNil = []
@@ -38,20 +36,26 @@ abFromListEither [] = Just ABNil
 abFromListEither (Left a : as) = fmap (a :/) (abFromListEither . rehties $ as)
 abFromListEither (Right _ : _) = Nothing
 
+abHead :: ABList a b -> Maybe a
+abHead = shallowFold Nothing $ const . Just
+
+abTail :: ABList a b -> Maybe (ABList b a)
+abTail = shallowFold Nothing $ const Just
+
+abInit :: ABList a b -> Maybe (ABList a b)
+abInit = undefined
+
 aaToList :: ABList a a -> [a]
 aaToList = undefined
 
 aaFromList :: [a] -> ABList a a
 aaFromList = undefined
 
-abHead :: ABList a b -> Maybe a
-abHead = undefined
+abFoldr :: ((Either a b) -> t -> t) -> t -> (ABList a b) -> t
+abFoldr = undefined
 
-abTail :: ABList a b -> Maybe (ABList b a)
-abTail = undefined
-
-abInit :: ABList a b -> Maybe (ABList a b)
-abInit = undefined
+abFoldr' :: (a -> t -> t) -> (b -> t -> t) -> t -> (ABList a b) -> t
+abFoldr' = undefined
 
 abZip :: [a] -> [b] -> ABList a b
 abZip = undefined
