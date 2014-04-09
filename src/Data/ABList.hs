@@ -7,7 +7,8 @@ module Data.ABList (
   aaToList,
   aaFromList,
   abHead,
-  abTail
+  abTail,
+  aaMap
 ) where
 
 infixr 5 :/
@@ -50,7 +51,8 @@ aaToList ABNil = []
 aaToList (a :/ as) = a : (aaToList as)
 
 aaMap :: (a -> b) -> ABList a a -> ABList b b
-aaMap = undefined
+aaMap _ ABNil = ABNil
+aaMap f (a :/ as) = f a :/ (aaMap f as)
 
 aaFromList :: [a] -> ABList a a
 aaFromList [] = ABNil

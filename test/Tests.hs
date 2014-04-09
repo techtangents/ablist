@@ -166,5 +166,7 @@ g_aaMap =
   ]
 
 prop_aaMap :: [Int] -> Bool
-prop_aaMap as = (2 +) `aaMap` (aaFromList as) == (2 +) `fmap` as
+prop_aaMap as =
+  let f a = a + 2
+  in  aaToList (aaMap f (aaFromList as)) == fmap f as
 
