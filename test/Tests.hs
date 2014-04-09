@@ -117,10 +117,24 @@ prop_abTail_2 a b = abTail (a :/ b :/ ABNil :: ABList Int String) == (Just $ b :
 g_aaToList =
   testGroup "aaToList"
   [ testProperty "empty" prop_aaToList_empty
+  , testProperty "1" prop_aaToList_1
+  , testProperty "2" prop_aaToList_2
+  , testProperty "3" prop_aaToList_3
   ]
 
-prop_asToList_empty :: Bool
-prop_asToList_empty ABNil = ([] :: [Int])
+prop_aaToList_empty :: Bool
+prop_aaToList_empty = aaToList ABNil == ([] :: [Int])
+
+prop_aaToList_1 :: Int -> Bool
+prop_aaToList_1 a = aaToList (a :/ ABNil) == [a]
+
+prop_aaToList_2 :: Int -> Int -> Bool
+prop_aaToList_2 a b = aaToList (a :/ b :/ ABNil) == [a, b]
+
+prop_aaToList_3 :: Int -> Int -> Int -> Bool
+prop_aaToList_3 a b c = aaToList (a :/ b :/ c :/ ABNil) == [a, b, c]
+
+
 
 
 

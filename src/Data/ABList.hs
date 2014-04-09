@@ -46,7 +46,8 @@ abInit :: ABList a b -> Maybe (ABList a b)
 abInit = undefined
 
 aaToList :: ABList a a -> [a]
-aaToList = undefined
+aaToList ABNil = []
+aaToList (a :/ as) = a : (aaToList as)
 
 aaFromList :: [a] -> ABList a a
 aaFromList = undefined
