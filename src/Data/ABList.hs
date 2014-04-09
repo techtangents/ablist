@@ -50,7 +50,8 @@ aaToList ABNil = []
 aaToList (a :/ as) = a : (aaToList as)
 
 aaFromList :: [a] -> ABList a a
-aaFromList = undefined
+aaFromList [] = ABNil
+aaFromList (a : as) = a :/ (aaFromList as)
 
 abFoldr :: ((Either a b) -> t -> t) -> t -> (ABList a b) -> t
 abFoldr = undefined
