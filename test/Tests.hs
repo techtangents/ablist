@@ -206,6 +206,8 @@ g_abZipPairs =
   testGroup "abZipPairs"
   [ testProperty "0" p_abZipPairs_0
   , testProperty "1" p_abZipPairs_1
+  , testProperty "2" p_abZipPairs_2
+  , testProperty "3" p_abZipPairs_3
   ]
 
 p_abZipPairs_0 :: Bool
@@ -214,4 +216,9 @@ p_abZipPairs_0 = abZipPairs ([] :: [(Double, Int)]) == ABNil
 p_abZipPairs_1 :: Int -> Float -> Bool
 p_abZipPairs_1 a b = abZipPairs [(a, b)] == a :/ b :/ ABNil
 
+p_abZipPairs_2 :: Int -> Float -> Int -> Float -> Bool
+p_abZipPairs_2 a b c d = abZipPairs [(a,b),(c,d)] == a :/ b :/ c :/ d :/ ABNil
+
+p_abZipPairs_3 :: Int -> Float -> Int -> Float -> Int -> Float -> Bool
+p_abZipPairs_3 a b c d e f = abZipPairs [(a,b),(c,d),(e,f)] == a :/ b :/ c :/ d :/ e :/ f :/ ABNil
 
