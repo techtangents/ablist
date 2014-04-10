@@ -22,7 +22,8 @@ tests =
     g_aaMap,
     g_abZip,
     g_abFromPairs,
-    g_abToPairs
+    g_abToPairs,
+    g_abFoldr
   ]
 
 g_abToListEither =
@@ -253,5 +254,27 @@ p_abToPairs_roundTrip as =
       pairs = as `zip` bs
   in  (abToPairs . abFromPairs) pairs == pairs
 
+
+g_abFoldr =
+  testGroup "abFoldr"
+  [ testProperty "0" p_abFoldr_0
+  , testProperty "1" p_abFoldr_1
+  , testProperty "2" p_abFoldr_2
+  , testProperty "list" p_abFoldr_list
+  ]
+
+-- abFoldr :: ((Either a b) -> t -> t) -> t -> (ABList a b) -> t
+
+p_abFoldr_0 :: Bool
+p_abFoldr_0 = abFoldr undefined "q" (ABNil :: ABList Int String) == "q"
+
+p_abFoldr_1 :: Int -> Bool
+p_abFoldr_1 a = abFoldr (\(Left z) t -> show z ++ t) "q" (a :/ ABNil) == show a ++ "q"
+
+p_abFoldr_2 :: Int -> Char -> Bool
+p_abFoldr_2 a b = abFoldr (\e t -> (either show show e) ++ t) "q" (a :/ b :/ ABNil) == show a ++ show b ++ "q"
+
+p_abFoldr_list :: [Int] -> Bool
+p_abFoldr_list as = abFoldr (\e t -> (either show show e) ++ t) "q" (aaFromList as) == foldr (\e t -> show e ++ t) "q" as
 
 
