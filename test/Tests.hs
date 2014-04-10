@@ -21,7 +21,8 @@ tests =
     g_aaFromList,
     g_aaMap,
     g_abZip,
-    g_abZipPairs
+    g_abFromPairs,
+    g_abToPairs
   ]
 
 g_abToListEither =
@@ -202,23 +203,55 @@ p_abZip_2_2 :: Int -> Float -> Int -> Float -> Bool
 p_abZip_2_2 a b c d = abZip [a, c] (b : d : undefined) == a :/ b :/ c :/ d :/ ABNil
 
 
-g_abZipPairs =
-  testGroup "abZipPairs"
-  [ testProperty "0" p_abZipPairs_0
-  , testProperty "1" p_abZipPairs_1
-  , testProperty "2" p_abZipPairs_2
-  , testProperty "3" p_abZipPairs_3
+g_abFromPairs =
+  testGroup "abFromPairs"
+  [ testProperty "0" p_abFromPairs_0
+  , testProperty "1" p_abFromPairs_1
+  , testProperty "2" p_abFromPairs_2
+  , testProperty "n" p_abFromPairs_n
   ]
 
-p_abZipPairs_0 :: Bool
-p_abZipPairs_0 = abZipPairs ([] :: [(Double, Int)]) == ABNil
+p_abFromPairs_0 :: Bool
+p_abFromPairs_0 = abFromPairs ([] :: [(Double, Int)]) == ABNil
 
-p_abZipPairs_1 :: Int -> Float -> Bool
-p_abZipPairs_1 a b = abZipPairs [(a, b)] == a :/ b :/ ABNil
+p_abFromPairs_1 :: Int -> Float -> Bool
+p_abFromPairs_1 a b = abFromPairs [(a, b)] == a :/ b :/ ABNil
 
-p_abZipPairs_2 :: Int -> Float -> Int -> Float -> Bool
-p_abZipPairs_2 a b c d = abZipPairs [(a,b),(c,d)] == a :/ b :/ c :/ d :/ ABNil
+p_abFromPairs_2 :: Int -> Float -> Int -> Float -> Bool
+p_abFromPairs_2 a b c d = abFromPairs [(a,b),(c,d)] == a :/ b :/ c :/ d :/ ABNil
 
-p_abZipPairs_3 :: Int -> Float -> Int -> Float -> Int -> Float -> Bool
-p_abZipPairs_3 a b c d e f = abZipPairs [(a,b),(c,d),(e,f)] == a :/ b :/ c :/ d :/ e :/ f :/ ABNil
+p_abFromPairs_n :: [Int] -> Bool
+p_abFromPairs_n as =
+  let bs = fmap show as
+  in  abFromPairs (as `zip` bs) == as `abZip` bs
+
+
+g_abToPairs =
+  testGroup "abUnzip"
+  [ testProperty "0" p_abToPairs_0
+  , testProperty "1" p_abToPairs_1
+  , testProperty "2" p_abToPairs_2
+  , testProperty "3" p_abToPairs_3
+  , testProperty "round trip" p_abToPairs_roundTrip
+  ]
+
+p_abToPairs_0 :: Bool
+p_abToPairs_0 = abToPairs ABNil == ([] :: [(Int,Float)])
+
+p_abToPairs_1 :: Int -> Bool
+p_abToPairs_1 a = abToPairs (a :/ ABNil) == ([] :: [(Int,Float)])
+
+p_abToPairs_2 :: Int -> Char -> Bool
+p_abToPairs_2 a b = abToPairs (b :/ a :/ ABNil) == [(b,a)]
+
+p_abToPairs_3 :: Int -> Char -> Int -> Bool
+p_abToPairs_3 a b c = abToPairs (a :/ b :/ c :/ ABNil) == [(a,b)]
+
+p_abToPairs_roundTrip :: [Int] -> Bool
+p_abToPairs_roundTrip as =
+  let bs = fmap show as
+      pairs = as `zip` bs
+  in  (abToPairs . abFromPairs) pairs == pairs
+
+
 

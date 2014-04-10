@@ -10,7 +10,8 @@ module Data.ABList (
   abTail,
   aaMap,
   abZip,
-  abZipPairs
+  abFromPairs,
+  abToPairs
 ) where
 
 infixr 5 :/
@@ -70,11 +71,17 @@ abZip [] _ = ABNil
 abZip (a:_) [] = a :/ ABNil
 abZip (a:as) (b:bs) = a :/ b :/ (abZip as bs)
 
-abZipPairs :: [(a, b)] -> ABList a b
-abZipPairs = foldr (\(a, b) cs -> a :/ b :/ cs) ABNil
+abFromPairs :: [(a, b)] -> ABList a b
+abFromPairs = foldr (\(a, b) cs -> a :/ b :/ cs) ABNil
+
+abToPairs :: ABList a b -> [(a, b)]
+abToPairs ABNil = []
+abToPairs (_ :/ ABNil) = []
+abToPairs (a :/ b :/ cs) = (a,b) : abToPairs cs
 
 abMap :: (a -> a') -> (b -> b') -> ABList a b -> ABList a' b'
 abMap = undefined
+
 
 abMapToList :: (a -> t) -> (b -> t) -> ABList a b -> [t]
 abMapToList = undefined
@@ -82,14 +89,6 @@ abMapToList = undefined
 abMapToList' :: (Either a b -> t) -> ABList a b -> [t]
 abMapToList' = undefined
 
-abUnzip :: ABList a b -> ([a], [b])
-abUnzip = undefined
-
-abUnzip' :: ABList a b -> (a, [b], [a])
-abUnzip' = undefined
-
-abUnzip'' :: ABList a b -> (a, [(b, a)])
-abUnzip'' = undefined
 
 abReverse :: ABList a b -> Either (ABList a b) (ABList b a)
 abReverse = undefined
