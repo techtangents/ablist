@@ -57,8 +57,7 @@ aaMap _ ABNil = ABNil
 aaMap f (a :/ as) = f a :/ (aaMap f as)
 
 aaFromList :: [a] -> ABList a a
-aaFromList [] = ABNil
-aaFromList (a : as) = a :/ (aaFromList as)
+aaFromList = foldr (:/) ABNil
 
 abFoldr :: ((Either a b) -> t -> t) -> t -> (ABList a b) -> t
 abFoldr = undefined
