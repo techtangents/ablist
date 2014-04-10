@@ -8,7 +8,9 @@ module Data.ABList (
   aaFromList,
   abHead,
   abTail,
-  aaMap
+  aaMap,
+  abZip,
+  abZipPairs
 ) where
 
 infixr 5 :/
@@ -65,10 +67,12 @@ abFoldr' :: (a -> t -> t) -> (b -> t -> t) -> t -> (ABList a b) -> t
 abFoldr' = undefined
 
 abZip :: [a] -> [b] -> ABList a b
-abZip = undefined
+abZip [] _ = ABNil
+abZip (a:_) [] = a :/ ABNil
+abZip (a:as) (b:bs) = a :/ b :/ (abZip as bs)
 
 abZipPairs :: [(a, b)] -> ABList a b
-abZipPairs = undefined
+abZipPairs = foldr (\(a, b) cs -> a :/ b :/ cs) ABNil
 
 abMap :: (a -> a') -> (b -> b') -> ABList a b -> ABList a' b'
 abMap = undefined
