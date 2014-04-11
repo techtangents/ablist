@@ -9,6 +9,7 @@ module Data.ABList (
   abHead,
   abTail,
   aaMap,
+  abMap,
   abZip,
   abFromPairs,
   abToPairs
@@ -63,7 +64,6 @@ aaFromList = foldr (:/) ABNil
 abFoldr :: ((Either a b) -> t -> t) -> t -> (ABList a b) -> t
 abFoldr _ t ABNil = t
 abFoldr f t (a :/ ABNil) = f (Left a) t
---abFoldr f t (a :/ b :/ ABNil) = f (Left a) (f (Right b) t)
 abFoldr f t (a :/ b :/ cs) = f (Left a) (f (Right b) (abFoldr f t cs))
 
 abFoldr' :: (a -> t -> t) -> (b -> t -> t) -> t -> (ABList a b) -> t
@@ -83,7 +83,9 @@ abToPairs (_ :/ ABNil) = []
 abToPairs (a :/ b :/ cs) = (a,b) : abToPairs cs
 
 abMap :: (a -> a') -> (b -> b') -> ABList a b -> ABList a' b'
-abMap = undefined
+abMap _ _ ABNil = ABNil
+abMap fa _ (a :/ ABNil) = fa a :/ ABNil
+abMap fa fb (a :/ b :/ cs) = fa a :/ fb b :/ (abMap fa fb cs)
 
 
 abMapToList :: (a -> t) -> (b -> t) -> ABList a b -> [t]

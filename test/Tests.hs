@@ -23,7 +23,8 @@ tests =
     g_abZip,
     g_abFromPairs,
     g_abToPairs,
-    g_abFoldr
+    g_abFoldr,
+    g_abMap
   ]
 
 g_abToListEither =
@@ -277,4 +278,28 @@ p_abFoldr_2 a b = abFoldr (\e t -> (either show show e) ++ t) "q" (a :/ b :/ ABN
 p_abFoldr_list :: [Int] -> Bool
 p_abFoldr_list as = abFoldr (\e t -> (either show show e) ++ t) "q" (aaFromList as) == foldr (\e t -> show e ++ t) "q" as
 
+
+g_abMap =
+  testGroup "abMap"
+  [ testProperty "0" p_abMap_0
+  , testProperty "1" p_abMap_1
+  , testProperty "2" p_abMap_2
+  , testProperty "3" p_abMap_3
+  , testProperty "4" p_abMap_4
+  ]
+
+p_abMap_0 :: Bool
+p_abMap_0 = abMap undefined undefined ABNil == (ABNil :: ABList Int Char)
+
+p_abMap_1 :: Int -> Bool
+p_abMap_1 a = abMap show undefined (a :/ ABNil) == ((show a) :/ ABNil :: ABList String Bool)
+
+p_abMap_2 :: Int -> Char -> Bool
+p_abMap_2 i c = abMap (+1) show (i :/ c :/ ABNil) == (i + 1 :/ show c :/ ABNil)
+
+p_abMap_3 :: Int -> Char -> Int -> Bool
+p_abMap_3 i c j = abMap (+1) show (i :/ c :/ j :/ ABNil) == (i + 1 :/ show c :/ j + 1 :/ ABNil)
+
+p_abMap_4 :: Int -> Char -> Int -> Char -> Bool
+p_abMap_4 i c j d = abMap (+1) show (i :/ c :/ j :/ d :/ ABNil) == (i + 1 :/ show c :/ j + 1 :/ show d :/ ABNil)
 
