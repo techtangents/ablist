@@ -12,7 +12,8 @@ module Data.ABList (
   abMap,
   abZip,
   abFromPairs,
-  abToPairs
+  abToPairs,
+  abMerge
 ) where
 
 infixr 5 :/
@@ -87,13 +88,11 @@ abMap _ _ ABNil = ABNil
 abMap fa _ (a :/ ABNil) = fa a :/ ABNil
 abMap fa fb (a :/ b :/ cs) = fa a :/ fb b :/ (abMap fa fb cs)
 
-
-abMapToList :: (a -> t) -> (b -> t) -> ABList a b -> [t]
-abMapToList = undefined
+abMerge :: (a -> t) -> (b -> t) -> ABList a b -> [t]
+abMerge f g = aaToList . (abMap f g)
 
 abMapToList' :: (Either a b -> t) -> ABList a b -> [t]
 abMapToList' = undefined
-
 
 abReverse :: ABList a b -> Either (ABList a b) (ABList b a)
 abReverse = undefined
@@ -104,10 +103,7 @@ abMapLefts = undefined
 abMapRights :: (b -> b') -> ABList a b -> ABList a b'
 abMapRights = undefined
 
-
 -- right-biased functor
 instance Functor (ABList a) where
   fmap = abMapRights
-
-
 

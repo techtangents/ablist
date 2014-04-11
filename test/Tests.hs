@@ -24,7 +24,8 @@ tests =
     g_abFromPairs,
     g_abToPairs,
     g_abFoldr,
-    g_abMap
+    g_abMap,
+    g_abMerge
   ]
 
 g_abToListEither =
@@ -302,4 +303,29 @@ p_abMap_3 i c j = abMap (+1) show (i :/ c :/ j :/ ABNil) == (i + 1 :/ show c :/ 
 
 p_abMap_4 :: Int -> Char -> Int -> Char -> Bool
 p_abMap_4 i c j d = abMap (+1) show (i :/ c :/ j :/ d :/ ABNil) == (i + 1 :/ show c :/ j + 1 :/ show d :/ ABNil)
+
+
+g_abMerge =
+  testGroup "abMerge"
+  [ testProperty "0" p_abMerge_0
+  , testProperty "1" p_abMerge_1
+  , testProperty "2" p_abMerge_2
+  , testProperty "3" p_abMerge_3
+  , testProperty "4" p_abMerge_4
+  ]
+
+p_abMerge_0 :: Bool
+p_abMerge_0 = abMerge undefined undefined (ABNil :: ABList Int Char) == ([] :: [Char])
+
+p_abMerge_1 :: Int -> Bool
+p_abMerge_1 a = abMerge show undefined (a :/ ABNil :: ABList Int Char) == [show a]
+
+p_abMerge_2 :: Int -> String -> Bool
+p_abMerge_2 a b = abMerge show id (a :/ b :/ ABNil) == [show a, b]
+
+p_abMerge_3 :: Int -> String -> Int -> Bool
+p_abMerge_3 a b c = abMerge show id (a :/ b :/ c :/ ABNil) == [show a, b, show c]
+
+p_abMerge_4 :: Int -> String -> Int -> String -> Bool
+p_abMerge_4 a b c d = abMerge show id (a :/ b :/ c :/ d :/ ABNil) == [show a, b, show c, d]
 
