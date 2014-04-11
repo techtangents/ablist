@@ -63,12 +63,12 @@ aaFromList :: [a] -> ABList a a
 aaFromList = foldr (:/) ABNil
 
 abFoldr :: ((Either a b) -> t -> t) -> t -> (ABList a b) -> t
-abFoldr _ t ABNil = t
-abFoldr f t (a :/ ABNil) = f (Left a) t
-abFoldr f t (a :/ b :/ cs) = f (Left a) (f (Right b) (abFoldr f t cs))
+abFoldr f = abFoldr' (f . Left) (f . Right)
 
 abFoldr' :: (a -> t -> t) -> (b -> t -> t) -> t -> (ABList a b) -> t
-abFoldr' = undefined
+abFoldr' _ _ t ABNil = t
+abFoldr' f g t (a :/ ABNil) = f a t
+abFoldr' f g t (a :/ b :/ cs) = f a (g b (abFoldr' f g t cs))
 
 abZip :: [a] -> [b] -> ABList a b
 abZip [] _ = ABNil
