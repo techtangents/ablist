@@ -12,23 +12,24 @@ main = defaultMain tests
 
 tests :: [Test]
 tests =
-  [
-    g_abToListEither,
-    g_abFromListEither,
-    g_abHead,
-    g_abTail,
-    g_aaToList,
-    g_aaFromList,
-    g_aaMap,
-    g_abZip,
-    g_abFromPairs,
-    g_abToPairs,
-    g_abFoldr,
-    g_abFoldr',
-    g_abMap,
-    g_abMerge,
-    g_abInit,
-    g_abReverse
+  [ g_abToListEither
+  , g_abFromListEither
+  , g_abHead
+  , g_abTail
+  , g_aaToList
+  , g_aaFromList
+  , g_aaMap
+  , g_abZip
+  , g_abFromPairs
+  , g_abToPairs
+  , g_abFoldr
+  , g_abFoldr'
+  , g_abMap
+  , g_abMerge
+  , g_abInit
+  , g_abReverse
+  , g_abMapLefts
+  , g_abMapRights
   ]
 
 g_abToListEither =
@@ -418,3 +419,12 @@ p_abReverse_m is c =
   in  abReverse z == Left z'
 
 
+g_abMapLefts =
+  testGroup "abMapLefts"
+  [
+  ]
+
+g_abMapRights =
+  testGroup "abMapRights"
+  [
+  ]
