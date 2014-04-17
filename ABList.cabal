@@ -2,7 +2,7 @@ Name:               ABList
 Version:            0.0.1
 Author:             Dylan Just <dylan@techtangents.com>
 License:            BSD3
-Copyright:          Dylan Just
+Copyright:          Dylan Just, Travis Cardwell
 Maintainer:         Dylan Just
 Category:           Control
 Synopsis:           An alternating list of two types
