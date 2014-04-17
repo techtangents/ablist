@@ -22,8 +22,7 @@ module Data.ABList (
   (./)
 ) where
 
-import Control.Category
-import Prelude hiding ((.),id)
+import Prelude hiding (id)
 
 infixr 5 :/
 data ABList a b = ABNil | a :/ ABList b a
@@ -93,7 +92,7 @@ abFoldr' f _ t (a :/ ABNil) = f a t
 abFoldr' f g t (a :/ b :/ cs) = f a (g b (abFoldr' f g t cs))
 
 abFoldl :: (t -> Either a b -> t) -> t -> (ABList a b) -> t
-abFoldl f = abFoldl' (f >>> (Left >>>)) (f >>> (Right >>>))
+abFoldl f = abFoldl' ((. Left) . f) ((. Right) . f)
 
 abFoldl' :: (t -> a -> t) -> (t -> b -> t) -> t -> (ABList a b) -> t
 abFoldl' _ _ t ABNil = t
