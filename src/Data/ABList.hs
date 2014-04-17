@@ -2,6 +2,8 @@
 
 module Data.ABList (
   ABList(..),
+  (./),
+  abSingle,
   abFoldr,
   abFoldr',
   abToListEither,
@@ -17,18 +19,17 @@ module Data.ABList (
   abFromPairs,
   abToPairs,
   abMerge,
-  abSingle,
   abReverse,
-  (./)
+  abMapLefts,
+  abMapRights
+
 ) where
 
-import Prelude hiding (id)
+import Prelude
 
 infixr 5 :/
 data ABList a b = ABNil | a :/ ABList b a
   deriving (Eq, Ord, Show)
-
-
 
 infixr 5 ./
 (./) :: a -> b -> ABList a b
@@ -133,11 +134,11 @@ abReverse = goAB ABNil
 
 -- test
 abMapLefts :: (a -> a') -> ABList a b -> ABList a' b
-abMapLefts = undefined
+abMapLefts = flip abMap id
 
 -- test
 abMapRights :: (b -> b') -> ABList a b -> ABList a b'
-abMapRights = undefined
+abMapRights = abMap id
 
 -- right-biased functor
 instance Functor (ABList a) where
