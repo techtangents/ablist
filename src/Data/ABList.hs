@@ -120,9 +120,7 @@ abMap fa fb (a :/ b :/ cs) = fa a :/ fb b :/ (abMap fa fb cs)
 abMerge :: (a -> t) -> (b -> t) -> ABList a b -> [t]
 abMerge f g = aaToList . (abMap f g)
 
-
 -- thanks to Travis Cardwell ("tcard")
--- test
 abReverse :: ABList a b -> Either (ABList a b) (ABList b a)
 abReverse = goAB ABNil
  where
