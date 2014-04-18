@@ -51,18 +51,9 @@ rehties = fmap rehtie
 
 abFromListEither :: [Either a b] -> Maybe (ABList a b)
 abFromListEither [] = Just ABNil
-abFromListEither (x:xs) = quack x xs
-  where
-    quack :: Either a b -> [Either a b] -> Maybe (ABList a b)
-    quack (Right _) _ = Nothing
-    quack (Left a) [] = Just $ a :/ ABNil
-    quack (Left a) (x:xs) = fmap (a :/) (croak x xs)
-
-    croak :: Either a b -> [Either a b] -> Maybe (ABList b a)
-    croak (Left _) _ = Nothing
-    croak (Right b) [] = Just $ b :/ ABNil
-    croak (Right b) (x:xs) = fmap (b :/) (quack x xs)
-
+abFromListEither (Left a : []) = Just $ a :/ ABNil
+abFromListEither (Left a : Right b : xs) = fmap (\t -> a :/ b :/ t) (abFromListEither xs)
+abFromListEither _ = Nothing
 
 abHead :: ABList a b -> Maybe a
 abHead = shallowFold Nothing $ const . Just
