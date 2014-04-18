@@ -5,6 +5,8 @@ module Data.ABList (
   abSingle,
   abFoldr,
   abFoldr',
+  abFoldl,
+  abFoldl',
   abToListEither,
   abFromListEither,
   aaToList,
@@ -41,13 +43,6 @@ abToListEither :: ABList a b -> [Either a b]
 abToListEither ABNil = []
 abToListEither (a :/ ABNil) = [Left a]
 abToListEither (a :/ b :/ abz) = (Left a) : (Right b) : abToListEither abz
-
--- either backwards
-rehtie :: Either a b -> Either b a
-rehtie = either Right Left
-
-rehties :: [Either a b] -> [Either b a]
-rehties = fmap rehtie
 
 abFromListEither :: [Either a b] -> Maybe (ABList a b)
 abFromListEither [] = Just ABNil
