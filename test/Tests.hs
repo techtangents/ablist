@@ -10,6 +10,15 @@ import Data.ABList
 main :: IO ()
 main = defaultMain tests
 
+instance (Arbitrary a, Arbitrary b) => Arbitrary (ABList a b) where
+  arbitrary =
+    do
+      as <- arbitrary
+      bs <- arbitrary
+      let n = return ABNil
+      let z = return $ abZip as bs
+      frequency [(2, n), (98, z)]
+
 tests :: [Test]
 tests =
   [ g_abToListEither
@@ -310,6 +319,7 @@ g_abMap =
   , testProperty "2" p_abMap_2
   , testProperty "3" p_abMap_3
   , testProperty "4" p_abMap_4
+  , testProperty "id" p_abMap_id
   ]
 
 p_abMap_0 :: Bool
@@ -327,6 +337,8 @@ p_abMap_3 i c j = abMap (+1) show (i :/ c ./ j) == (i + 1 :/ show c ./ j + 1)
 p_abMap_4 :: Int -> Char -> Int -> Char -> Bool
 p_abMap_4 i c j d = abMap (+1) show (i :/ c :/ j ./ d) == (i + 1 :/ show c :/ j + 1 ./ show d)
 
+p_abMap_id :: ABList String Float -> Bool
+p_abMap_id x = abMap id id x == x
 
 g_abMerge =
   testGroup "abMerge"
@@ -421,10 +433,52 @@ p_abReverse_m is c =
 
 g_abMapLefts =
   testGroup "abMapLefts"
-  [
+  [ testProperty "0" p_abMapLefts_0
+  , testProperty "1" p_abMapLefts_1
+  , testProperty "2" p_abMapLefts_2
+  , testProperty "3" p_abMapLefts_3
+  , testProperty "id" p_abMapLefts_id
   ]
+
+p_abMapLefts_0 :: Bool
+p_abMapLefts_0 = abMapLefts (undefined :: Int -> String) (ABNil :: ABList Int Char) == (ABNil :: ABList String Char)
+
+p_abMapLefts_1 :: Int -> Bool
+p_abMapLefts_1 a = abMapLefts show (a :/ ABNil :: ABList Int Char) == (show a) :/ ABNil
+
+p_abMapLefts_2 :: Int -> Char -> Bool
+p_abMapLefts_2 a b = abMapLefts show (a ./ b) == (show a) ./ b
+
+p_abMapLefts_3 :: Int -> Char -> Int -> Bool
+p_abMapLefts_3 a b c = abMapLefts show (a :/ b ./ c) == (show a) :/ b ./ (show c)
+
+p_abMapLefts_id :: ABList Int Char -> Bool
+p_abMapLefts_id x = abMapLefts id x == x
+
 
 g_abMapRights =
   testGroup "abMapRights"
-  [
+  [ testProperty "0" p_abMapRights_0
+  , testProperty "1" p_abMapRights_1
+  , testProperty "2" p_abMapRights_2
+  , testProperty "3" p_abMapRights_3
+  , testProperty "id" p_abMapRights_id
   ]
+
+p_abMapRights_0 :: Bool
+p_abMapRights_0 = abMapRights (undefined :: Int -> String) (ABNil :: ABList Char Int) == (ABNil :: ABList Char String)
+
+p_abMapRights_1 :: Char -> Bool
+p_abMapRights_1 a = abMapRights (undefined :: Int -> String) (a :/ ABNil :: ABList Char Int) == a :/ ABNil
+
+p_abMapRights_2 :: Int -> Char -> Bool
+p_abMapRights_2 a b = abMapRights show (a ./ b) == a ./ (show b)
+
+p_abMapRights_3 :: Int -> Char -> Int -> Bool
+p_abMapRights_3 a b c = abMapRights show (a :/ b ./ c) == a :/ (show b) ./ c
+
+p_abMapRights_4 :: Int -> Char -> Int -> Char -> Bool
+p_abMapRights_4 a b c d = abMapRights show (a :/ b :/ c ./ d) == a :/ (show b) :/ c ./ (show d)
+
+p_abMapRights_id :: ABList Int Char -> Bool
+p_abMapRights_id x = abMapRights id x == x

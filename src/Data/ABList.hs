@@ -132,11 +132,9 @@ abReverse = goAB ABNil
    goBA acc ABNil = Left acc
    goBA acc (x :/ xs) = goAB (x :/ acc) xs
 
--- test
 abMapLefts :: (a -> a') -> ABList a b -> ABList a' b
 abMapLefts = flip abMap id
 
--- test
 abMapRights :: (b -> b') -> ABList a b -> ABList a b'
 abMapRights = abMap id
 
