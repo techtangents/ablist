@@ -2,7 +2,6 @@
 
 module Data.ABList (
   ABList(..),
-  (./),
   abSingle,
   abFoldr,
   abFoldr',
@@ -31,10 +30,6 @@ infixr 5 :/
 data ABList a b = ABNil | a :/ ABList b a
   deriving (Eq, Ord, Show)
 
-infixr 5 ./
-(./) :: a -> b -> ABList a b
-(./) a b = a :/ b :/ ABNil
-
 abSingle :: a -> ABList a b
 abSingle a = a :/ ABNil
 
@@ -56,8 +51,18 @@ rehties = fmap rehtie
 
 abFromListEither :: [Either a b] -> Maybe (ABList a b)
 abFromListEither [] = Just ABNil
-abFromListEither (Left a : as) = fmap (a :/) (abFromListEither . rehties $ as)
-abFromListEither (Right _ : _) = Nothing
+abFromListEither (x:xs) = quack x xs
+  where
+    quack :: Either a b -> [Either a b] -> Maybe (ABList a b)
+    quack (Right _) _ = Nothing
+    quack (Left a) [] = Just $ a :/ ABNil
+    quack (Left a) (x:xs) = fmap (a :/) (croak x xs)
+
+    croak :: Either a b -> [Either a b] -> Maybe (ABList b a)
+    croak (Left _) _ = Nothing
+    croak (Right b) [] = Just $ b :/ ABNil
+    croak (Right b) (x:xs) = fmap (b :/) (quack x xs)
+
 
 abHead :: ABList a b -> Maybe a
 abHead = shallowFold Nothing $ const . Just
