@@ -1,15 +1,15 @@
-module ABListTests(tests) where
+module AbListTests(tests) where
 
 import Test.Framework
 import Test.Framework.Providers.QuickCheck2
 import Test.Framework.Providers.HUnit
 import Test.QuickCheck
-import Data.ABList
+import Data.AbList
 import Arbs
 
 tests :: Test
 tests =
-  testGroup "ABList"
+  testGroup "AbList"
   [ g_abToListEither
   , g_abFromListEither
   , g_abHead
@@ -40,19 +40,19 @@ g_abToListEither =
   ]
 
 p_abToListEither_Empty :: Bool
-p_abToListEither_Empty = (abToListEither ABNil) == ([] :: [Either String Int])
+p_abToListEither_Empty = (abToListEither AbNil) == ([] :: [Either String Int])
 
 p_abToListEither_1 :: Int -> Bool
-p_abToListEither_1 a = (abToListEither $ a :/ ABNil) == ([Left a] :: [Either Int String])
+p_abToListEither_1 a = (abToListEither $ a :/ AbNil) == ([Left a] :: [Either Int String])
 
 p_abToListEither_2 :: Int -> String -> Bool
-p_abToListEither_2 a b = (abToListEither $ a :/ b :/ ABNil) == ([Left a, Right b])
+p_abToListEither_2 a b = (abToListEither $ a :/ b :/ AbNil) == ([Left a, Right b])
 
 p_abToListEither_3 :: Int -> String -> Int -> Bool
-p_abToListEither_3 a b c = (abToListEither $ a :/ b :/ c :/ ABNil) == ([Left a, Right b, Left c])
+p_abToListEither_3 a b c = (abToListEither $ a :/ b :/ c :/ AbNil) == ([Left a, Right b, Left c])
 
 p_abToListEither_4 :: Int -> String -> Int -> String -> Bool
-p_abToListEither_4 a b c d = (abToListEither $ a :/ b :/ c :/ d :/ ABNil) == ([Left a, Right b, Left c, Right d])
+p_abToListEither_4 a b c d = (abToListEither $ a :/ b :/ c :/ d :/ AbNil) == ([Left a, Right b, Left c, Right d])
 
 
 g_abFromListEither =
@@ -69,22 +69,22 @@ g_abFromListEither =
   ]
 
 p_abFromListEither_empty :: Bool
-p_abFromListEither_empty = abFromListEither ([] :: [Either Int String]) == Just ABNil
+p_abFromListEither_empty = abFromListEither ([] :: [Either Int String]) == Just AbNil
 
 p_abFromListEither_g :: Int -> Bool
-p_abFromListEither_g a = abFromListEither ([Left a] :: [Either Int String]) == Just (a :/ ABNil)
+p_abFromListEither_g a = abFromListEither ([Left a] :: [Either Int String]) == Just (a :/ AbNil)
 
 p_abFromListEither_gg :: Int -> Float -> Bool
-p_abFromListEither_gg a b = abFromListEither ([Left a, Right b]) == Just (a :/ b :/ ABNil)
+p_abFromListEither_gg a b = abFromListEither ([Left a, Right b]) == Just (a :/ b :/ AbNil)
 
 p_abFromListEither_ggg :: Int -> Float -> Int -> Bool
-p_abFromListEither_ggg a b c = abFromListEither [Left a, Right b, Left c] == Just (a :/ b :/ c :/ ABNil)
+p_abFromListEither_ggg a b c = abFromListEither [Left a, Right b, Left c] == Just (a :/ b :/ c :/ AbNil)
 
 p_abFromListEither_gggg :: Int -> Float -> Int -> Float -> Bool
-p_abFromListEither_gggg a b c d = abFromListEither [Left a, Right b, Left c, Right d] == Just (a :/ b :/ c :/ d :/ ABNil)
+p_abFromListEither_gggg a b c d = abFromListEither [Left a, Right b, Left c, Right d] == Just (a :/ b :/ c :/ d :/ AbNil)
 
 p_abFromListEither_ggggg :: Int -> Float -> Int -> Float -> Int -> Bool
-p_abFromListEither_ggggg a b c d e = abFromListEither [Left a, Right b, Left c, Right d] == Just (a :/ b :/ c :/ d :/ e :/ ABNil)
+p_abFromListEither_ggggg a b c d e = abFromListEither [Left a, Right b, Left c, Right d] == Just (a :/ b :/ c :/ d :/ e :/ AbNil)
 
 p_abFromListEither_b :: String -> Bool
 p_abFromListEither_b a = abFromListEither ((Right a : undefined) :: [Either Int String]) == Nothing
@@ -103,10 +103,10 @@ g_abHead =
   ]
 
 p_abHead_empty :: Bool
-p_abHead_empty = abHead (ABNil :: ABList Int Float) == Nothing
+p_abHead_empty = abHead (AbNil :: AbList Int Float) == Nothing
 
 p_abHead_n :: Int -> Bool
-p_abHead_n a = abHead (a :/ undefined :: ABList Int Float) == Just a
+p_abHead_n a = abHead (a :/ undefined :: AbList Int Float) == Just a
 
 
 g_abTail =
@@ -117,13 +117,13 @@ g_abTail =
   ]
 
 p_abTail_empty :: Bool
-p_abTail_empty = abTail (ABNil :: ABList Int Float) == Nothing
+p_abTail_empty = abTail (AbNil :: AbList Int Float) == Nothing
 
 p_abTail_1 :: Int -> Bool
-p_abTail_1 a = abTail (a :/ ABNil :: ABList Int String) == Just ABNil
+p_abTail_1 a = abTail (a :/ AbNil :: AbList Int String) == Just AbNil
 
 p_abTail_2 :: Int -> String -> Bool
-p_abTail_2 a b = abTail (a :/ b :/ ABNil :: ABList Int String) == (Just $ b :/ ABNil)
+p_abTail_2 a b = abTail (a :/ b :/ AbNil :: AbList Int String) == (Just $ b :/ AbNil)
 
 
 g_aaToList =
@@ -135,16 +135,16 @@ g_aaToList =
   ]
 
 p_aaToList_empty :: Bool
-p_aaToList_empty = aaToList ABNil == ([] :: [Int])
+p_aaToList_empty = aaToList AbNil == ([] :: [Int])
 
 p_aaToList_1 :: Int -> Bool
-p_aaToList_1 a = aaToList (a :/ ABNil) == [a]
+p_aaToList_1 a = aaToList (a :/ AbNil) == [a]
 
 p_aaToList_2 :: Int -> Int -> Bool
-p_aaToList_2 a b = aaToList (a :/ b :/ ABNil) == [a, b]
+p_aaToList_2 a b = aaToList (a :/ b :/ AbNil) == [a, b]
 
 p_aaToList_3 :: Int -> Int -> Int -> Bool
-p_aaToList_3 a b c = aaToList (a :/ b :/ c :/ ABNil) == [a, b, c]
+p_aaToList_3 a b c = aaToList (a :/ b :/ c :/ AbNil) == [a, b, c]
 
 
 g_aaFromList =
@@ -157,16 +157,16 @@ g_aaFromList =
   ]
 
 p_aaFromList_empty :: Bool
-p_aaFromList_empty = aaFromList ([] :: [Int]) == ABNil
+p_aaFromList_empty = aaFromList ([] :: [Int]) == AbNil
 
 p_aaFromList_1 :: Int -> Bool
-p_aaFromList_1 a = aaFromList [a] == a :/ ABNil
+p_aaFromList_1 a = aaFromList [a] == a :/ AbNil
 
 p_aaFromList_2 :: Int -> Int -> Bool
-p_aaFromList_2 a b = aaFromList [a, b] == a :/ b :/ ABNil
+p_aaFromList_2 a b = aaFromList [a, b] == a :/ b :/ AbNil
 
 p_aaFromList_3 :: Int -> Int -> Int -> Bool
-p_aaFromList_3 a b c = aaFromList [a, b, c] == a :/ b :/ c :/ ABNil
+p_aaFromList_3 a b c = aaFromList [a, b, c] == a :/ b :/ c :/ AbNil
 
 p_aaToList_roundTrip :: [Int] -> Bool
 p_aaToList_roundTrip as = (aaToList . aaFromList) as == as
@@ -193,19 +193,19 @@ g_abZip =
   ]
 
 p_abZip_0_0 :: Bool
-p_abZip_0_0 = abZip ([] :: [String]) (undefined :: [Float]) == ABNil
+p_abZip_0_0 = abZip ([] :: [String]) (undefined :: [Float]) == AbNil
 
 p_abZip_1_0 :: Int -> Bool
-p_abZip_1_0 a = abZip (a : undefined) ([] :: [String]) == a :/ ABNil
+p_abZip_1_0 a = abZip (a : undefined) ([] :: [String]) == a :/ AbNil
 
 p_abZip_1_1 :: Int -> Float -> Bool
-p_abZip_1_1 a b = abZip [a] (b : undefined) == a :/ b :/ ABNil
+p_abZip_1_1 a b = abZip [a] (b : undefined) == a :/ b :/ AbNil
 
 p_abZip_2_1 :: Int -> Float -> Int -> Bool
-p_abZip_2_1 a b c = abZip (a : c : undefined) [b] == a :/ b :/ c :/ ABNil
+p_abZip_2_1 a b c = abZip (a : c : undefined) [b] == a :/ b :/ c :/ AbNil
 
 p_abZip_2_2 :: Int -> Float -> Int -> Float -> Bool
-p_abZip_2_2 a b c d = abZip [a, c] (b : d : undefined) == a :/ b :/ c :/ d :/ ABNil
+p_abZip_2_2 a b c d = abZip [a, c] (b : d : undefined) == a :/ b :/ c :/ d :/ AbNil
 
 
 g_abFromPairs =
@@ -217,13 +217,13 @@ g_abFromPairs =
   ]
 
 p_abFromPairs_0 :: Bool
-p_abFromPairs_0 = abFromPairs ([] :: [(Double, Int)]) == ABNil
+p_abFromPairs_0 = abFromPairs ([] :: [(Double, Int)]) == AbNil
 
 p_abFromPairs_1 :: Int -> Float -> Bool
-p_abFromPairs_1 a b = abFromPairs [(a, b)] == a :/ b :/ ABNil
+p_abFromPairs_1 a b = abFromPairs [(a, b)] == a :/ b :/ AbNil
 
 p_abFromPairs_2 :: Int -> Float -> Int -> Float -> Bool
-p_abFromPairs_2 a b c d = abFromPairs [(a,b),(c,d)] == a :/ b :/ c :/ d :/ ABNil
+p_abFromPairs_2 a b c d = abFromPairs [(a,b),(c,d)] == a :/ b :/ c :/ d :/ AbNil
 
 p_abFromPairs_n :: [Int] -> Bool
 p_abFromPairs_n as =
@@ -241,16 +241,16 @@ g_abToPairs =
   ]
 
 p_abToPairs_0 :: Bool
-p_abToPairs_0 = abToPairs ABNil == ([] :: [(Int,Float)])
+p_abToPairs_0 = abToPairs AbNil == ([] :: [(Int,Float)])
 
 p_abToPairs_1 :: Int -> Bool
-p_abToPairs_1 a = abToPairs (a :/ ABNil) == ([] :: [(Int,Float)])
+p_abToPairs_1 a = abToPairs (a :/ AbNil) == ([] :: [(Int,Float)])
 
 p_abToPairs_2 :: Int -> Char -> Bool
-p_abToPairs_2 a b = abToPairs (b :/ a :/ ABNil) == [(b,a)]
+p_abToPairs_2 a b = abToPairs (b :/ a :/ AbNil) == [(b,a)]
 
 p_abToPairs_3 :: Int -> Char -> Int -> Bool
-p_abToPairs_3 a b c = abToPairs (a :/ b :/ c :/ ABNil) == [(a,b)]
+p_abToPairs_3 a b c = abToPairs (a :/ b :/ c :/ AbNil) == [(a,b)]
 
 p_abToPairs_roundTrip :: [Int] -> Bool
 p_abToPairs_roundTrip as =
@@ -268,13 +268,13 @@ g_abFoldr =
   ]
 
 p_abFoldr_0 :: Bool
-p_abFoldr_0 = abFoldr undefined "q" (ABNil :: ABList Int String) == "q"
+p_abFoldr_0 = abFoldr undefined "q" (AbNil :: AbList Int String) == "q"
 
 p_abFoldr_1 :: Int -> Bool
-p_abFoldr_1 a = abFoldr (\(Left z) t -> show z ++ t) "q" (a :/ ABNil) == show a ++ "q"
+p_abFoldr_1 a = abFoldr (\(Left z) t -> show z ++ t) "q" (a :/ AbNil) == show a ++ "q"
 
 p_abFoldr_2 :: Int -> Char -> Bool
-p_abFoldr_2 a b = abFoldr (\e t -> (either show show e) ++ t) "q" (a :/ b :/ ABNil) == show a ++ show b ++ "q"
+p_abFoldr_2 a b = abFoldr (\e t -> (either show show e) ++ t) "q" (a :/ b :/ AbNil) == show a ++ show b ++ "q"
 
 p_abFoldr_list :: [Int] -> Bool
 p_abFoldr_list as = abFoldr (\e t -> (either show show e) ++ t) "q" (aaFromList as) == foldr (\e t -> show e ++ t) "q" as
@@ -289,13 +289,13 @@ g_abFoldr' =
   ]
 
 p_abFoldr_0' :: Bool
-p_abFoldr_0' = abFoldr' undefined undefined "q" (ABNil :: ABList Int String) == "q"
+p_abFoldr_0' = abFoldr' undefined undefined "q" (AbNil :: AbList Int String) == "q"
 
 p_abFoldr_1' :: Int -> Bool
-p_abFoldr_1' a = abFoldr' (\z t -> show z ++ t) undefined "q" (a :/ ABNil) == show a ++ "q"
+p_abFoldr_1' a = abFoldr' (\z t -> show z ++ t) undefined "q" (a :/ AbNil) == show a ++ "q"
 
 p_abFoldr_2' :: Int -> Char -> Bool
-p_abFoldr_2' a b = abFoldr' (\x t -> show x ++ t) (\x t -> show x ++ t) "q" (a :/ b :/ ABNil) == show a ++ show b ++ "q"
+p_abFoldr_2' a b = abFoldr' (\x t -> show x ++ t) (\x t -> show x ++ t) "q" (a :/ b :/ AbNil) == show a ++ show b ++ "q"
 
 p_abFoldr_list' :: [Int] -> Bool
 p_abFoldr_list' as = abFoldr' (\x t -> show x ++ t) (\x t -> show x ++ t) "q" (aaFromList as) == foldr (\e t -> show e ++ t) "q" as
@@ -312,21 +312,21 @@ g_abMap =
   ]
 
 p_abMap_0 :: Bool
-p_abMap_0 = abMap undefined undefined ABNil == (ABNil :: ABList Int Char)
+p_abMap_0 = abMap undefined undefined AbNil == (AbNil :: AbList Int Char)
 
 p_abMap_1 :: Int -> Bool
-p_abMap_1 a = abMap show undefined (a :/ ABNil) == ((show a) :/ ABNil :: ABList String Bool)
+p_abMap_1 a = abMap show undefined (a :/ AbNil) == ((show a) :/ AbNil :: AbList String Bool)
 
 p_abMap_2 :: Int -> Char -> Bool
-p_abMap_2 i c = abMap (+1) show (i :/ c :/ ABNil) == (i + 1 :/ show c :/ ABNil)
+p_abMap_2 i c = abMap (+1) show (i :/ c :/ AbNil) == (i + 1 :/ show c :/ AbNil)
 
 p_abMap_3 :: Int -> Char -> Int -> Bool
-p_abMap_3 i c j = abMap (+1) show (i :/ c :/ j :/ ABNil) == (i + 1 :/ show c :/ j + 1 :/ ABNil)
+p_abMap_3 i c j = abMap (+1) show (i :/ c :/ j :/ AbNil) == (i + 1 :/ show c :/ j + 1 :/ AbNil)
 
 p_abMap_4 :: Int -> Char -> Int -> Char -> Bool
-p_abMap_4 i c j d = abMap (+1) show (i :/ c :/ j :/ d :/ ABNil) == (i + 1 :/ show c :/ j + 1 :/ show d :/ ABNil)
+p_abMap_4 i c j d = abMap (+1) show (i :/ c :/ j :/ d :/ AbNil) == (i + 1 :/ show c :/ j + 1 :/ show d :/ AbNil)
 
-p_abMap_id :: ABList String Float -> Bool
+p_abMap_id :: AbList String Float -> Bool
 p_abMap_id x = abMap id id x == x
 
 g_abMerge =
@@ -339,19 +339,19 @@ g_abMerge =
   ]
 
 p_abMerge_0 :: Bool
-p_abMerge_0 = abMerge undefined undefined (ABNil :: ABList Int Char) == ([] :: [Char])
+p_abMerge_0 = abMerge undefined undefined (AbNil :: AbList Int Char) == ([] :: [Char])
 
 p_abMerge_1 :: Int -> Bool
-p_abMerge_1 a = abMerge show undefined (abSingle a :: ABList Int Char) == [show a]
+p_abMerge_1 a = abMerge show undefined (abSingle a :: AbList Int Char) == [show a]
 
 p_abMerge_2 :: Int -> String -> Bool
-p_abMerge_2 a b = abMerge show id (a :/ b :/ ABNil) == [show a, b]
+p_abMerge_2 a b = abMerge show id (a :/ b :/ AbNil) == [show a, b]
 
 p_abMerge_3 :: Int -> String -> Int -> Bool
-p_abMerge_3 a b c = abMerge show id (a :/ b :/ c :/ ABNil) == [show a, b, show c]
+p_abMerge_3 a b c = abMerge show id (a :/ b :/ c :/ AbNil) == [show a, b, show c]
 
 p_abMerge_4 :: Int -> String -> Int -> String -> Bool
-p_abMerge_4 a b c d = abMerge show id (a :/ b :/ c :/ d :/ ABNil) == [show a, b, show c, d]
+p_abMerge_4 a b c d = abMerge show id (a :/ b :/ c :/ d :/ AbNil) == [show a, b, show c, d]
 
 
 g_abInit =
@@ -364,19 +364,19 @@ g_abInit =
   ]
 
 p_abInit_0 :: Bool
-p_abInit_0 = abInit (ABNil :: ABList Int Char) == Nothing
+p_abInit_0 = abInit (AbNil :: AbList Int Char) == Nothing
 
 p_abInit_1 :: Int -> Bool
-p_abInit_1 a = abInit (a :/ ABNil :: ABList Int Char) == Just ABNil
+p_abInit_1 a = abInit (a :/ AbNil :: AbList Int Char) == Just AbNil
 
 p_abInit_2 :: Int -> Char -> Bool
-p_abInit_2 a b = abInit (a :/ b :/ ABNil) == (Just $ abSingle a)
+p_abInit_2 a b = abInit (a :/ b :/ AbNil) == (Just $ abSingle a)
 
 p_abInit_3 :: Float -> (Maybe Int) -> Float -> Bool
-p_abInit_3 a b c = abInit (a :/ b :/ c :/ ABNil) == (Just $ a :/ b :/ ABNil)
+p_abInit_3 a b c = abInit (a :/ b :/ c :/ AbNil) == (Just $ a :/ b :/ AbNil)
 
 p_abInit_4 :: (Either Float Int) -> String -> (Either Float Int) -> String -> Bool
-p_abInit_4 a b c d = abInit (a :/ b :/ c :/ d :/ ABNil) == (Just $ a :/ b :/ c :/ ABNil)
+p_abInit_4 a b c d = abInit (a :/ b :/ c :/ d :/ AbNil) == (Just $ a :/ b :/ c :/ AbNil)
 
 
 g_abReverse =
@@ -391,19 +391,19 @@ g_abReverse =
   ]
 
 p_abReverse_0 :: Bool
-p_abReverse_0 = abReverse (ABNil :: ABList Int Char) == Right ABNil
+p_abReverse_0 = abReverse (AbNil :: AbList Int Char) == Right AbNil
 
 p_abReverse_1 :: Int -> Bool
-p_abReverse_1 a = abReverse (a :/ ABNil :: ABList Int Char) == (Left $ a :/ ABNil)
+p_abReverse_1 a = abReverse (a :/ AbNil :: AbList Int Char) == (Left $ a :/ AbNil)
 
 p_abReverse_2 :: Int -> Char -> Bool
-p_abReverse_2 a c = abReverse (a :/ c :/ ABNil) == (Right $ c :/ a :/ ABNil)
+p_abReverse_2 a c = abReverse (a :/ c :/ AbNil) == (Right $ c :/ a :/ AbNil)
 
 p_abReverse_3 :: Int -> Char -> Int -> Bool
-p_abReverse_3 a b c = abReverse (a :/ b :/ c :/ ABNil) == (Left $ c :/ b :/ a :/ ABNil)
+p_abReverse_3 a b c = abReverse (a :/ b :/ c :/ AbNil) == (Left $ c :/ b :/ a :/ AbNil)
 
 p_abReverse_4 :: Int -> Char -> Int -> Char -> Bool
-p_abReverse_4 a b c d = abReverse (a :/ b :/ c :/ d :/ ABNil) == (Right $ d :/ c :/ b :/ a :/ ABNil)
+p_abReverse_4 a b c d = abReverse (a :/ b :/ c :/ d :/ AbNil) == (Right $ d :/ c :/ b :/ a :/ AbNil)
 
 p_abReverse_n :: [Int] -> Bool
 p_abReverse_n is =
@@ -430,18 +430,18 @@ g_abMapLefts =
   ]
 
 p_abMapLefts_0 :: Bool
-p_abMapLefts_0 = abMapLefts (undefined :: Int -> String) (ABNil :: ABList Int Char) == (ABNil :: ABList String Char)
+p_abMapLefts_0 = abMapLefts (undefined :: Int -> String) (AbNil :: AbList Int Char) == (AbNil :: AbList String Char)
 
 p_abMapLefts_1 :: Int -> Bool
-p_abMapLefts_1 a = abMapLefts show (a :/ ABNil :: ABList Int Char) == (show a) :/ ABNil
+p_abMapLefts_1 a = abMapLefts show (a :/ AbNil :: AbList Int Char) == (show a) :/ AbNil
 
 p_abMapLefts_2 :: Int -> Char -> Bool
-p_abMapLefts_2 a b = abMapLefts show (a :/ b :/ ABNil) == (show a) :/ b :/ ABNil
+p_abMapLefts_2 a b = abMapLefts show (a :/ b :/ AbNil) == (show a) :/ b :/ AbNil
 
 p_abMapLefts_3 :: Int -> Char -> Int -> Bool
-p_abMapLefts_3 a b c = abMapLefts show (a :/ b :/ c :/ ABNil) == (show a) :/ b :/ (show c) :/ ABNil
+p_abMapLefts_3 a b c = abMapLefts show (a :/ b :/ c :/ AbNil) == (show a) :/ b :/ (show c) :/ AbNil
 
-p_abMapLefts_id :: ABList Int Char -> Bool
+p_abMapLefts_id :: AbList Int Char -> Bool
 p_abMapLefts_id x = abMapLefts id x == x
 
 
@@ -455,19 +455,19 @@ g_abMapRights =
   ]
 
 p_abMapRights_0 :: Bool
-p_abMapRights_0 = abMapRights (undefined :: Int -> String) (ABNil :: ABList Char Int) == (ABNil :: ABList Char String)
+p_abMapRights_0 = abMapRights (undefined :: Int -> String) (AbNil :: AbList Char Int) == (AbNil :: AbList Char String)
 
 p_abMapRights_1 :: Char -> Bool
-p_abMapRights_1 a = abMapRights (undefined :: Int -> String) (a :/ ABNil :: ABList Char Int) == a :/ ABNil
+p_abMapRights_1 a = abMapRights (undefined :: Int -> String) (a :/ AbNil :: AbList Char Int) == a :/ AbNil
 
 p_abMapRights_2 :: Int -> Char -> Bool
-p_abMapRights_2 a b = abMapRights show (a :/ b :/ ABNil) == a :/ (show b) :/ ABNil
+p_abMapRights_2 a b = abMapRights show (a :/ b :/ AbNil) == a :/ (show b) :/ AbNil
 
 p_abMapRights_3 :: Int -> Char -> Int -> Bool
-p_abMapRights_3 a b c = abMapRights show (a :/ b :/ c :/ ABNil) == a :/ (show b) :/ c :/ ABNil
+p_abMapRights_3 a b c = abMapRights show (a :/ b :/ c :/ AbNil) == a :/ (show b) :/ c :/ AbNil
 
 p_abMapRights_4 :: Int -> Char -> Int -> Char -> Bool
-p_abMapRights_4 a b c d = abMapRights show (a :/ b :/ c :/ d :/ ABNil) == a :/ (show b) :/ c :/ (show d) :/ ABNil
+p_abMapRights_4 a b c d = abMapRights show (a :/ b :/ c :/ d :/ AbNil) == a :/ (show b) :/ c :/ (show d) :/ AbNil
 
-p_abMapRights_id :: ABList Int Char -> Bool
+p_abMapRights_id :: AbList Int Char -> Bool
 p_abMapRights_id x = abMapRights id x == x

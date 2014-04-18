@@ -20,7 +20,8 @@ Library
                     -fno-warn-type-defaults
                     -fno-warn-name-shadowing
 
-  Exposed-Modules:  Data.ABList
+  Exposed-Modules:  Data.AbList
+                    Data.AbneList
   hs-source-dirs:   src
 
 

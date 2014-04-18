@@ -5,14 +5,14 @@ import Test.Framework.Providers.QuickCheck2
 import Test.Framework.Providers.HUnit
 import Test.QuickCheck
 
-import qualified ABListTests (tests)
-import qualified ABNEListTests (tests)
+import qualified AbListTests (tests)
+import qualified AbneListTests (tests)
 
 main :: IO ()
 main = defaultMain [tests]
 
 tests =
   testGroup "the"
-  [ ABListTests.tests
-  , ABNEListTests.tests
+  [ AbListTests.tests
+  , AbneListTests.tests
   ]
