@@ -4,6 +4,7 @@ import Data.AbList
 
 infixr 5 ://
 data AbneList a b = a :// AbList b a
+  deriving (Eq, Ord, Show)
 
 -- test
 abneHead :: AbneList a b -> a

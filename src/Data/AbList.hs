@@ -1,28 +1,4 @@
-module Data.AbList (
-  AbList(..),
-  abSingle,
-  abFoldr,
-  abFoldr',
-  abFoldl,
-  abFoldl',
-  abToListEither,
-  abFromListEither,
-  aaToList,
-  aaFromList,
-  abHead,
-  abTail,
-  abInit,
-  aaMap,
-  abMap,
-  abZip,
-  abFromPairs,
-  abToPairs,
-  abMerge,
-  abReverse,
-  abMapLefts,
-  abMapRights
-
-) where
+module Data.AbList where
 
 import Prelude
 
@@ -33,9 +9,9 @@ data AbList a b = AbNil | a :/ AbList b a
 abSingle :: a -> AbList a b
 abSingle a = a :/ AbNil
 
-shallowFold :: t -> (a -> AbList b a -> t) -> (AbList a b) -> t
-shallowFold t _ AbNil = t
-shallowFold _ t (a :/ ba) = t a ba
+abShallowFold :: t -> (a -> AbList b a -> t) -> (AbList a b) -> t
+abShallowFold t _ AbNil = t
+abShallowFold _ t (a :/ ba) = t a ba
 
 abToListEither :: AbList a b -> [Either a b]
 abToListEither AbNil = []
@@ -49,10 +25,10 @@ abFromListEither (Left a : Right b : xs) = fmap (\t -> a :/ b :/ t) (abFromListE
 abFromListEither _ = Nothing
 
 abHead :: AbList a b -> Maybe a
-abHead = shallowFold Nothing $ const . Just
+abHead = abShallowFold Nothing $ const . Just
 
 abTail :: AbList a b -> Maybe (AbList b a)
-abTail = shallowFold Nothing $ const Just
+abTail = abShallowFold Nothing $ const Just
 
 abInit' :: a -> AbList b a -> AbList a b
 abInit' _ AbNil = AbNil
