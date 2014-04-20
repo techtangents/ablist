@@ -30,13 +30,13 @@ abHead = abShallowFold Nothing $ const . Just
 abTail :: AbList a b -> Maybe (AbList b a)
 abTail = abShallowFold Nothing $ const Just
 
-abInit' :: a -> AbList b a -> AbList a b
-abInit' _ AbNil = AbNil
-abInit' x (y :/ zs) = x :/ abInit' y zs
-
 abInit :: AbList a b -> Maybe (AbList a b)
 abInit AbNil = Nothing
-abInit (a :/ as) = Just $ abInit' a as
+abInit (a :/ as) = Just $ q a as
+  where
+    q :: a -> AbList b a -> AbList a b
+    q _ AbNil = AbNil
+    q x (y :/ zs) = x :/ q y zs
 
 aaToList :: AbList a a -> [a]
 aaToList AbNil = []
