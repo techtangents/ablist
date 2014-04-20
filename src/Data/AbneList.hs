@@ -58,6 +58,11 @@ abneFoldl f t = abFoldl f t . toAbList
 abneFoldl' :: (t -> a -> t) -> (t -> b -> t) -> t -> (AbneList a b) -> t
 abneFoldl' f g t = abFoldl' f g t . toAbList
 
+abneZip :: [a] -> [b] -> Maybe (AbneList a b)
+abneZip = (fromAbList .) . abZip
+
+abneFromPairs :: [(a, b)] -> Maybe (AbneList a b)
+abneFromPairs = fromAbList . abFromPairs
 
 -- reduce
 -- reverse
