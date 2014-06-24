@@ -3,7 +3,15 @@ module Data.AbneList where
 import Data.AbList
 
 infixr 5 ://
-data AbneList a b = a :// AbList b a
+
+
+-- | A non-empty alternating list of two types. 
+-- e.g.
+--
+-- > 3 :// "a" :/ 7 :/ "b" :/ AbNil
+--
+data AbneList a b = 
+  a :// AbList b a         -- ^ Cons a head to an AbList to form an AbneList
   deriving (Eq, Ord, Show)
 
 abneHead :: AbneList a b -> a

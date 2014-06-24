@@ -3,7 +3,15 @@ module Data.AbList where
 import Prelude
 
 infixr 5 :/
-data AbList a b = AbNil | a :/ AbList b a
+
+-- | An alternating list of two types. 
+-- e.g.
+--
+-- > 3 :/ "a" :/ 7 :/ "b" :/ AbNil
+--
+data AbList a b            
+  = AbNil                  -- ^ An empty AbList
+  | a :/ AbList b a        -- ^ Cons of a head to an AbList
   deriving (Eq, Ord, Show)
 
 abSingle :: a -> AbList a b

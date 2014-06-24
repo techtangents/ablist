@@ -1,17 +1,21 @@
 Name:               ABList
-Version:            0.0.1
+Version:            0.0.4
 Author:             Dylan Just <dylan@techtangents.com>
 License:            BSD3
+license-file:       license.txt
 Copyright:          Dylan Just, Travis Cardwell
 Maintainer:         Dylan Just
-Category:           Control
+Category:           Data
 Synopsis:           An alternating list of two types
 Description:        An alternating list of two types
-Cabal-version:      >= 1.6
+Cabal-version:      >= 1.10
 Build-Type:         Simple
-
+source-repository head
+  type:     git
+  location: https://github.com/techtangents/ablist.git
 
 Library
+  default-language: Haskell2010
   Build-Depends:    base < 5 && >= 3,
                     linear,
                     newtype
@@ -26,6 +30,7 @@ Library
 
 
 test-suite the-tests
+  default-language:  Haskell2010
   type:              exitcode-stdio-1.0
   hs-source-dirs:    test, src
   main-is:           Tests.hs
